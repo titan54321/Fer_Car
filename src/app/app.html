@@ -1,0 +1,98 @@
+<header class="site-header">
+  <a class="brand" href="#inicio" aria-label="Fer Car Audio, inicio">
+    <img src="fer-car-audio-logo-cropped.png" alt="Fer Car Audio">
+  </a>
+  <button class="menu-button" (click)="menuOpen.set(!menuOpen())" aria-label="Abrir menú" [attr.aria-expanded]="menuOpen()">☰</button>
+  <nav [class.open]="menuOpen()" aria-label="Navegación principal">
+    <a href="#servicios" (click)="closeMenu()">Servicios</a>
+    <a href="#proyectos" (click)="closeMenu()">Proyectos</a>
+    <a href="#resenas" (click)="closeMenu()">Reseñas</a>
+    <a href="#contacto" (click)="closeMenu()">Contacto</a>
+  </nav>
+  <a class="header-cta" [href]="whatsappUrl" target="_blank" rel="noopener">Cotiza tu proyecto <span>↗</span></a>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="hero-shade"></div>
+    <div class="hero-content">
+      <p class="eyebrow"><span></span> Especialistas en car audio</p>
+      <h1>Haz que tu auto<br><em>suene increíble.</em></h1>
+      <p class="hero-copy">Instalaciones limpias, sonido de alto nivel y acabados que parecen de agencia. Diseñamos cada sistema pensando en ti y en tu auto.</p>
+      <div class="hero-actions">
+        <a class="button primary" [href]="whatsappUrl" target="_blank" rel="noopener">Hablar por WhatsApp <span>↗</span></a>
+        <a class="button secondary" href="#proyectos">Ver proyectos <span>↓</span></a>
+      </div>
+      <div class="hero-proof">
+        <div><strong>10+</strong><span>Años de<br>experiencia</span></div>
+        <div><strong>500+</strong><span>Proyectos<br>instalados</span></div>
+        <div><strong>4.9</strong><span><b>★★★★★</b><br>en reseñas</span></div>
+      </div>
+    </div>
+    <div class="scroll-note">DESLIZA PARA CONOCERNOS <span>↓</span></div>
+  </section>
+
+  <section class="services section" id="servicios">
+    <div class="section-heading split">
+      <div><p class="eyebrow dark"><span></span> Lo que hacemos</p><h2>Todo para disfrutar<br><em>cada kilómetro.</em></h2></div>
+      <p>Desde una mejora sencilla hasta un sistema completo hecho a medida. Te asesoramos con honestidad para lograr el mejor resultado dentro de tu presupuesto.</p>
+    </div>
+    <div class="service-grid">
+      <article><span class="number">01</span><div class="service-icon">◉</div><h3>Audio de alta fidelidad</h3><p>Bocinas, amplificadores, procesadores DSP y subwoofers seleccionados para tu vehículo.</p><a [href]="whatsappUrl" target="_blank">Cotizar servicio →</a></article>
+      <article><span class="number">02</span><div class="service-icon">▣</div><h3>Multimedia</h3><p>Pantallas, Apple CarPlay, Android Auto, cámaras de reversa e integración OEM.</p><a [href]="whatsappUrl" target="_blank">Cotizar servicio →</a></article>
+      <article><span class="number">03</span><div class="service-icon">✦</div><h3>Iluminación & estilo</h3><p>Iluminación ambiental, accesorios y detalles personalizados con acabado profesional.</p><a [href]="whatsappUrl" target="_blank">Cotizar servicio →</a></article>
+      <article><span class="number">04</span><div class="service-icon">◇</div><h3>Seguridad</h3><p>Alarmas, GPS, sensores y soluciones de protección instaladas de forma discreta.</p><a [href]="whatsappUrl" target="_blank">Cotizar servicio →</a></article>
+    </div>
+  </section>
+
+  <section class="projects section" id="proyectos">
+    <div class="section-heading row">
+      <div><p class="eyebrow"><span></span> Nuestro trabajo</p><h2>Proyectos que<br><em>hablan por sí solos.</em></h2></div>
+      <div class="filters" aria-label="Filtrar proyectos">
+        @for (filter of ['Todos', 'Audio', 'Cajones', 'Multimedia', 'Iluminación']; track filter) {
+          <button (click)="setFilter(filter)" [class.active]="activeFilter() === filter">{{ filter }}</button>
+        }
+      </div>
+    </div>
+    <div class="project-grid">
+      @for (project of filteredProjects(); track project.title) {
+        <article class="project-card">
+          <img [src]="project.image" [alt]="project.title" loading="lazy">
+          <div class="project-overlay"><span>{{ project.type }}</span><h3>{{ project.title }}</h3><p>{{ project.detail }}</p></div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="reviews section" id="resenas">
+    <div class="section-heading centered"><p class="eyebrow dark"><span></span> Clientes felices</p><h2>Su experiencia es<br><em>nuestra mejor carta.</em></h2></div>
+    <div class="review-grid">
+      <article><div class="stars">★★★★★</div><blockquote>“Quedó mejor de lo que imaginaba. El sonido es limpio, potente y no se ve un solo cable. Se nota la experiencia y el cuidado en cada detalle.”</blockquote><footer><div class="avatar">CM</div><p><strong>Carlos M.</strong><span>Instalación de audio SQ</span></p><small>Hace 2 semanas</small></footer></article>
+      <article><div class="stars">★★★★★</div><blockquote>“Me explicaron todas las opciones sin intentar venderme de más. Respetaron el presupuesto y entregaron el auto a tiempo. Súper recomendados.”</blockquote><footer><div class="avatar">AG</div><p><strong>Andrea G.</strong><span>Pantalla + cámara</span></p><small>Hace 1 mes</small></footer></article>
+      <article><div class="stars">★★★★★</div><blockquote>“La iluminación quedó espectacular y con acabado de agencia. Fer resolvió todas mis dudas por WhatsApp antes de empezar el trabajo.”</blockquote><footer><div class="avatar">JR</div><p><strong>Jorge R.</strong><span>Iluminación ambiental</span></p><small>Hace 1 mes</small></footer></article>
+    </div>
+  </section>
+
+  <section class="contact section" id="contacto">
+    <div class="contact-panel">
+      <div class="contact-copy"><p class="eyebrow"><span></span> Visítanos</p><h2>Tu próximo proyecto<br><em>empieza aquí.</em></h2><p>Cuéntanos qué auto tienes y qué quieres mejorar. Te orientamos sin compromiso.</p>
+        <div class="contact-list">
+          <a href="https://maps.google.com/?q=Ciudad+de+Mexico" target="_blank" rel="noopener"><i>⌖</i><span><small>UBICACIÓN</small>Av. Principal 123, Ciudad de México</span><b>↗</b></a>
+          <a href="tel:+525551234567"><i>☎</i><span><small>TELÉFONO</small>55 5123 4567</span><b>↗</b></a>
+          <div><i>◷</i><span><small>HORARIO</small>Lun – Sáb · 9:00 a 18:00</span></div>
+        </div>
+        <a class="button primary" [href]="whatsappUrl" target="_blank" rel="noopener">Escríbenos por WhatsApp <span>↗</span></a>
+      </div>
+      <a class="map" href="https://maps.google.com/?q=Ciudad+de+Mexico" target="_blank" rel="noopener" aria-label="Abrir ubicación en Google Maps"><div class="map-lines"></div><div class="pin">F</div><span>Abrir en Google Maps ↗</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="brand"><img src="fer-car-audio-logo-cropped.png" alt="Fer Car Audio"></div>
+  <p>Sonido que se siente.<br>Instalaciones que se admiran.</p>
+  <div class="footer-links"><a href="#servicios">Servicios</a><a href="#proyectos">Proyectos</a><a href="#resenas">Reseñas</a><a href="#contacto">Contacto</a></div>
+  <small>© 2026 Fer Car Audio. Todos los derechos reservados.</small>
+</footer>
+
+<a class="whatsapp-float" [href]="whatsappUrl" target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp"><span>●</span><b>¿Te ayudamos?</b></a>
