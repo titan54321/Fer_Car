@@ -5,7 +5,7 @@
   <a class="brand" href="#inicio" aria-label="Fer Car Audio, inicio">
     <img src="fer-car-audio-logo-cropped.png" alt="Fer Car Audio">
   </a>
-  <button class="menu-button" (click)="menuOpen.set(!menuOpen())" aria-label="Abrir menú" [attr.aria-expanded]="menuOpen()">☰</button>
+  <button class="menu-button" [class.active]="menuOpen()" (click)="menuOpen.set(!menuOpen())" aria-label="Abrir o cerrar menú" [attr.aria-expanded]="menuOpen()">{{ menuOpen() ? '×' : '☰' }}</button>
   <nav [class.open]="menuOpen()" aria-label="Navegación principal">
     <a href="#servicios" (click)="closeMenu()">Servicios</a>
     <a href="#proyectos" (click)="closeMenu()">Proyectos</a>
