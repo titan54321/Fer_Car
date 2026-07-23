@@ -1,3 +1,6 @@
+@if (adminMode()) {
+  <app-admin-panel />
+} @else {
 <header class="site-header">
   <a class="brand" href="#inicio" aria-label="Fer Car Audio, inicio">
     <img src="fer-car-audio-logo-cropped.png" alt="Fer Car Audio">
@@ -105,3 +108,4 @@
 </footer>
 
 <a class="whatsapp-float" [href]="whatsappUrl" target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp"><span>●</span><b>¿Te ayudamos?</b></a>
+}

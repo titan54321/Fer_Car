@@ -1,0 +1,126 @@
+@if (checkingSession()) {
+  <div class="auth-screen"><div class="auth-loader"></div><p>Verificando acceso…</p></div>
+} @else if (!authenticated()) {
+  <div class="auth-screen">
+    <form class="login-card" (ngSubmit)="signIn()">
+      <img src="fer-car-audio-logo-cropped.png" alt="Fer Car Audio">
+      <p>Panel de administración</p>
+      <h1>Iniciar sesión</h1>
+      <label>Correo electrónico<input type="email" name="email" [(ngModel)]="login.email" autocomplete="username" required></label>
+      <label>Contraseña<input type="password" name="password" [(ngModel)]="login.password" autocomplete="current-password" required></label>
+      @if (error()) { <div class="form-error">{{ error() }}</div> }
+      <button class="primary-action login-button" type="submit" [disabled]="working()">{{ working() ? 'Ingresando…' : 'Entrar al panel' }}</button>
+      <a href="./">← Volver al sitio</a>
+    </form>
+  </div>
+} @else {
+<div class="admin-shell">
+  <aside [class.open]="mobileNavOpen()">
+    <div class="admin-brand">
+      <img src="fer-car-audio-logo-cropped.png" alt="Fer Car Audio">
+      <span>Panel de control<small>Administración</small></span>
+    </div>
+    <nav aria-label="Administración">
+      <button [class.active]="activeSection() === 'projects'" (click)="selectSection('projects')"><i>▦</i> Proyectos <span>{{ projects().length }}</span></button>
+      <button [class.active]="activeSection() === 'upload'" (click)="selectSection('upload')"><i>＋</i> Nuevo proyecto</button>
+      <button [class.active]="activeSection() === 'settings'" (click)="selectSection('settings')"><i>⚙</i> Configuración</button>
+    </nav>
+    <div class="connection-card connected">
+      <span></span>
+      <p><strong>Supabase conectado</strong>Galería y almacenamiento activos</p>
+    </div>
+    <a class="back-link" href="./">← Volver al sitio</a>
+  </aside>
+
+  <main>
+    <header class="admin-header">
+      <button class="mobile-menu" (click)="mobileNavOpen.set(!mobileNavOpen())" aria-label="Abrir menú">☰</button>
+      <div>
+        <p>FER CAR AUDIO</p>
+        <h1>
+          @switch (activeSection()) {
+            @case ('upload') { Nuevo proyecto }
+            @case ('settings') { Configuración }
+            @default { Galería de proyectos }
+          }
+        </h1>
+      </div>
+      <div class="admin-user"><span>JL</span><p>Administrador<small>juan_ls58@hotmail.com</small></p><button class="logout" (click)="signOut()">Salir</button></div>
+    </header>
+
+    <div class="demo-banner ready">
+      <strong>Panel conectado</strong>
+      Las fotografías que publiques aquí aparecerán automáticamente en la galería del sitio.
+    </div>
+
+    @if (notice()) {
+      <div class="toast" role="status">{{ notice() }}</div>
+    }
+    @if (error()) {
+      <div class="toast error-toast" role="alert">{{ error() }}</div>
+    }
+
+    @if (activeSection() === 'projects') {
+      <section class="dashboard-head">
+        <div><span>{{ projects().length }} proyectos</span><p>Administra las fotografías visibles en la landing page.</p></div>
+        <button class="primary-action" (click)="selectSection('upload')">＋ Agregar proyecto</button>
+      </section>
+
+      <section class="project-table" aria-label="Listado de proyectos">
+        <div class="table-heading"><span>Proyecto</span><span>Categoría</span><span>Estado</span><span>Acciones</span></div>
+        @for (project of projects(); track project.id) {
+          <article>
+            <div class="project-name"><img [src]="project.image_url" [alt]="project.title"><div><strong>{{ project.title }}</strong><small>{{ project.description || 'Sin descripción' }}</small></div></div>
+            <span class="category">{{ project.category }}</span>
+            <span class="status"><i></i>{{ project.published ? 'Publicado' : 'Borrador' }}</span>
+            <div class="actions"><button class="delete" (click)="remove(project)" aria-label="Eliminar proyecto">Eliminar</button></div>
+          </article>
+        }
+      </section>
+    }
+
+    @if (activeSection() === 'upload') {
+      <section class="editor-layout">
+        <div class="editor-card">
+          <div class="card-title"><span>01</span><div><h2>Fotografía</h2><p>Usa una imagen horizontal y bien iluminada.</p></div></div>
+          <label class="dropzone" [class.has-image]="previewUrl()">
+            @if (previewUrl()) {
+              <img [src]="previewUrl()" alt="Vista previa del proyecto">
+              <span>Cambiar fotografía</span>
+            } @else {
+              <i>＋</i>
+              <strong>Selecciona una fotografía</strong>
+              <small>JPG, PNG o WEBP · Máximo recomendado 8 MB</small>
+              <b>Explorar archivos</b>
+            }
+            <input type="file" accept="image/jpeg,image/png,image/webp" (change)="chooseFile($event)">
+          </label>
+        </div>
+
+        <div class="editor-card">
+          <div class="card-title"><span>02</span><div><h2>Información</h2><p>Estos datos aparecerán sobre la fotografía.</p></div></div>
+          <label>Nombre del proyecto<input [(ngModel)]="draft.title" placeholder="Ej. Sistema de audio Mustang"></label>
+          <label>Categoría
+            <select [(ngModel)]="draft.category">
+              <option>Audio</option><option>Cajones</option><option>Multimedia</option><option>Iluminación</option><option>Racks</option>
+            </select>
+          </label>
+          <label>Descripción<textarea [(ngModel)]="draft.description" rows="4" placeholder="Ej. Sistema 3 vías · DSP · Subwoofer"></textarea></label>
+          <div class="editor-actions"><button class="secondary-action" (click)="resetDraft()">Limpiar</button><button class="primary-action" (click)="publish()" [disabled]="working()">{{ working() ? 'Publicando…' : 'Publicar proyecto' }}</button></div>
+        </div>
+      </section>
+    }
+
+    @if (activeSection() === 'settings') {
+      <section class="settings-card">
+        <span class="settings-icon">⌁</span>
+        <h2>Conexión con Supabase</h2>
+        <p>El panel utiliza acceso protegido, almacenamiento de fotografías y una base de datos para actualizar la galería sin volver a desplegar la página.</p>
+        <div><span>Almacenamiento de imágenes</span><b class="enabled">Conectado</b></div>
+        <div><span>Base de datos de proyectos</span><b class="enabled">Conectada</b></div>
+        <div><span>Administrador autorizado</span><b class="enabled">Juan LS</b></div>
+      </section>
+    }
+  </main>
+</div>
+}
