@@ -10,7 +10,7 @@ export class App {
   protected readonly menuOpen = signal(false);
   protected readonly activeFilter = signal('Todos');
   protected readonly whatsappUrl =
-    'https://wa.me/5215551234567?text=Hola%20Fer%20Car%20Audio%2C%20quiero%20cotizar%20un%20proyecto%20para%20mi%20auto.';
+    'https://wa.me/523521118244?text=Hola%20Fer%20Car%20Audio%2C%20quiero%20cotizar%20un%20proyecto%20para%20mi%20auto.';
 
   protected readonly projects = [
     { title: 'Audio SQL', type: 'Audio', detail: 'Sistema 3 vías · DSP · Subwoofer', image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=85' },
